@@ -1,3 +1,5 @@
+#!/usr/bin/node
+
 const fs = require('fs');
 
 const filePath = process.argv[2]; // Récupère le chemin du fichier depuis les arguments de la ligne de commande
