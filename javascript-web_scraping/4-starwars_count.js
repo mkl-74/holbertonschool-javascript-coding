@@ -1,29 +1,24 @@
-#!/usr/bin/env node
+#!/usr/bin/node
 
 const request = require('request');
+const starWarsUri = process.argv[2];
+let times = 0;
 
-const apiUrl = process.argv[2];
-const wedgeAntillesId = '18';
+request(starWarsUri, function (_err, _res, body) {
+  body = JSON.parse(body).results;
 
-request(apiUrl, (error, response, body) => {
-  if (error) {
-    console.error(error);
-    return;
-  }
-  
-  if (response.statusCode !== 200) {
-    console.log(`Error: ${response.statusCode}`);
-    return;
-  }
+  for (let i = 0; i < body.length; ++i) {
+    const characters = body[i].characters;
 
-  const films = JSON.parse(body).results;
-  let count = 0;
+    for (let j = 0; j < characters.length; ++j) {
+      const character = characters[j];
+      const characterId = character.split('/')[5];
 
-  films.forEach(film => {
-    if (film.characters.includes(`https://swapi-api.hbtn.io/api/people/${wedgeAntillesId}/`)) {
-      count++;
+      if (characterId === '18') {
+        times += 1;
+      }
     }
-  });
+  }
 
-  console.log(count);
+  console.log(times);
 });
